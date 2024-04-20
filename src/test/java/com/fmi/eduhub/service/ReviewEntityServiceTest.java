@@ -1,5 +1,6 @@
 package com.fmi.eduhub.service;
 
+import com.fmi.eduhub.dto.input.CourseInput;
 import com.fmi.eduhub.dto.input.ReviewInput;
 import com.fmi.eduhub.entity.CourseEntity;
 import com.fmi.eduhub.entity.ReviewEntity;
@@ -41,31 +42,28 @@ public class ReviewEntityServiceTest {
     @Mock
     private FileUploadService fileUploadService;
     @Mock
-    private ReviewEntityMapper reviewEntityMapper;
-    @Mock
     private PageableUtils pageableUtils;
 
     @InjectMocks
     private ReviewEntityService reviewEntityService;
 
+    private static final UUID  courseId = UUID.randomUUID();
+    private static final UUID userId = UUID.randomUUID();
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
     void createReview_Success() {
         // Setup
-        ReviewInput input = new ReviewInput();  // Assume this object is properly instantiated with necessary parameters.
-        ReviewEntity mappedEntity = new ReviewEntity();  // Assume this object is properly instantiated with necessary parameters.
-        UUID courseId = UUID.randomUUID();
+        ReviewInput input = new ReviewInput();
+        input.setCourseId(courseId.toString());
         CourseEntity course = new CourseEntity();
         course.setCourseId(courseId);
         UserEntity user = new UserEntity();
-        UUID userId = UUID.randomUUID();
         user.setUserId(userId);
 
-        when(reviewEntityMapper.fromInputToEntity(input)).thenReturn(mappedEntity);
         when(courseEntityRepository.findById(courseId)).thenReturn(Optional.of(course));
         when(usersEntityService.getCurrentUser()).thenReturn(user);
         when(reviewEntityService.canReviewCourse(user, course)).thenReturn(true);
@@ -83,7 +81,8 @@ public class ReviewEntityServiceTest {
     void createReview_CourseNotFound_ThrowsException() {
         // Setup
         ReviewInput input = new ReviewInput();
-        when(courseEntityRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+        input.setCourseId(courseId.toString());
+        when(courseEntityRepository.findById(courseId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> reviewEntityService.createReview(input));
@@ -98,7 +97,7 @@ public class ReviewEntityServiceTest {
         review.setCourse(new CourseEntity());
 
         when(reviewEntityRepository.findById(UUID.fromString(reviewId))).thenReturn(Optional.of(review));
-        when(reviewEntityRepository.findAvgRatingByCourse(any(UUID.class))).thenReturn(4.5);
+        when(reviewEntityRepository.findAvgRatingByCourse(any())).thenReturn(4.5);
 
         // Act
         boolean result = reviewEntityService.approveReview(reviewId);

@@ -15,8 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -38,7 +40,7 @@ public class UserCourseEntityServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
@@ -89,7 +91,7 @@ public class UserCourseEntityServiceTest {
         Set<LessonEntity> lessons = new HashSet<>();
         course.setLessons(lessons);
 
-        when(userCourseEntityRepository.existsById(any(UserCourseId.class))).thenReturn(false);
+        when(userCourseEntityRepository.existsById(any())).thenReturn(false);
 
         assertFalse(userCourseEntityService.hasUserCompletedCourse(user, course));
     }
@@ -124,7 +126,8 @@ public class UserCourseEntityServiceTest {
         UserEntity user = new UserEntity();
         user.setUserId(UUID.randomUUID());
         Pageable pageable = Pageable.unpaged();
-
+        when(userCourseEntityRepository.findAllByUserAndCourseCourseStatus(user, CourseStatusEnum.APPROVED, pageable))
+            .thenReturn(new PageImpl<>(new ArrayList<>()));
         userCourseEntityService.getCoursesEnrolled(user, pageable);
 
         verify(userCourseEntityRepository).findAllByUserAndCourseCourseStatus(eq(user), eq(CourseStatusEnum.APPROVED), eq(pageable));
