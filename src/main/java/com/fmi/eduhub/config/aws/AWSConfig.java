@@ -26,8 +26,6 @@ public class AWSConfig {
 
   @Bean
   public AmazonS3 amazonS3() {
-    System.out.println("ACCESS_KEY: " + ACCESS_KEY);
-    System.out.println("SECRET_KEY: " + SECRET_KEY);
     return AmazonS3ClientBuilder
         .standard()
         .withCredentials(new AWSStaticCredentialsProvider(awsCredentials()))

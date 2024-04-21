@@ -12,7 +12,7 @@
 	<artifactId>eduhub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>eduhub</name>
-	<description>Proiect licenta 2023 FMI</description>
+	<description>Proiect AWBD 2024 FMI</description>
 	<properties>
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
@@ -64,13 +64,11 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
-		<!--
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		-->
 
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
