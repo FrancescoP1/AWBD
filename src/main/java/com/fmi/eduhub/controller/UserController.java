@@ -4,6 +4,7 @@ import com.fmi.eduhub.dto.UserModel;
 import com.fmi.eduhub.dto.input.UserProfileInput;
 import com.fmi.eduhub.dto.output.UserProfileOutput;
 import com.fmi.eduhub.service.UsersEntityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class UserController {
 
     @PutMapping("/updateProfile")
     public ResponseEntity<Boolean> updateUserProfile(
-        @ModelAttribute UserProfileInput userProfileInput) {
+        @ModelAttribute @Valid UserProfileInput userProfileInput) {
         return new ResponseEntity<>(
             usersEntityService.updateUserProfile(userProfileInput),
             HttpStatus.OK);

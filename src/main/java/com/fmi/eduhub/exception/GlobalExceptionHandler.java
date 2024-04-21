@@ -49,6 +49,20 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(restError);
   }
 
+  @ExceptionHandler({BadUserRequestException.class})
+  public ResponseEntity<RestError> badUserRequestException(BadUserRequestException exception) {
+    log.error(exception.toString());
+    RestError restError = RestError.builder()
+        .status(HttpStatus.BAD_REQUEST)
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .message(exception.getMessage())
+        .timeStamp(OffsetDateTime.now())
+        .build();
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(restError);
+  }
+
   @ExceptionHandler({Exception.class})
   public ResponseEntity<RestError> handleException(Exception exception) {
     log.error(exception.toString());

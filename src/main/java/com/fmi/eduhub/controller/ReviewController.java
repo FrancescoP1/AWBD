@@ -3,6 +3,7 @@ package com.fmi.eduhub.controller;
 import com.fmi.eduhub.dto.input.ReviewInput;
 import com.fmi.eduhub.dto.output.ReviewOutput;
 import com.fmi.eduhub.service.ReviewEntityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class ReviewController {
 
   @PostMapping(value = "")
   public ResponseEntity<Boolean> createReview(
-      @RequestBody ReviewInput reviewInput) {
+      @RequestBody @Valid ReviewInput reviewInput) {
     return new ResponseEntity<>(
         reviewEntityService.createReview(reviewInput),
         HttpStatus.CREATED);

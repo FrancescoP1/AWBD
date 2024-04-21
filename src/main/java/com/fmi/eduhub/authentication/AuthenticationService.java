@@ -7,10 +7,12 @@ import com.fmi.eduhub.dto.UserModel;
 import com.fmi.eduhub.dto.input.UserRegistrationModel;
 import com.fmi.eduhub.entity.UserEntity;
 import com.fmi.eduhub.enums.UserRoleEnum;
+import com.fmi.eduhub.exception.BadUserRequestException;
 import com.fmi.eduhub.exception.CustomJwtException;
 import com.fmi.eduhub.exception.ExceptionConstants;
 import com.fmi.eduhub.mapper.UserEntityMapper;
 import com.fmi.eduhub.repository.UserEntityRepository;
+import com.fmi.eduhub.validation.ValidationMessages;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +45,9 @@ public class AuthenticationService {
   @Transactional
   public ResponseEntity<UserModel> registerUser(UserRegistrationModel registrationModel) {
     UserEntity userToBeRegistered = userEntityMapper.fromUserRegistrationModelToEntity(registrationModel);
+    if(!registrationModel.getPassword().equals(registrationModel.getConfirmPassword())) {
+      throw new BadUserRequestException(ValidationMessages.PASSWORDS_DO_NOT_MATCH_VALIDATION_MESSAGE);
+    }
     if(userEntityRepository.existsByEmail(userToBeRegistered.getEmail())) {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     }

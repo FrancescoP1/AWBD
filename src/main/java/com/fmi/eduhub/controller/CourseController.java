@@ -9,6 +9,7 @@ import com.fmi.eduhub.dto.output.LessonOutput;
 import com.fmi.eduhub.dto.output.ReviewOutput;
 import com.fmi.eduhub.service.CourseEntityService;
 import com.fmi.eduhub.service.UserCourseEntityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ public class CourseController {
 
     @PostMapping(value = "/")
     public ResponseEntity<CourseItemOutput> createCourse(
-        @ModelAttribute CourseInput model) {
+        @ModelAttribute @Valid CourseInput model) {
         System.out.println(model.getCourseCategory());
         return courseEntityService.createCourse(model);
     }
@@ -41,7 +42,7 @@ public class CourseController {
 
     @PutMapping(value="/")
     public ResponseEntity<CourseItemOutput> updateCourse(
-        @ModelAttribute CourseInput courseInput) throws AccessDeniedException {
+        @ModelAttribute @Valid CourseInput courseInput) throws AccessDeniedException {
         return new ResponseEntity<>(
             courseEntityService.updateCourse(courseInput),
             HttpStatus.OK);
@@ -49,7 +50,7 @@ public class CourseController {
 
     @PostMapping(value = "/addLesson")
     public ResponseEntity<Boolean> addLessonToCourse(
-        @ModelAttribute LessonInputModel lessonInputModel) {
+        @ModelAttribute @Valid LessonInputModel lessonInputModel) {
         return new ResponseEntity<>(
             courseEntityService.addLessonToCourse(lessonInputModel),
             HttpStatus.CREATED);
@@ -66,7 +67,7 @@ public class CourseController {
 
     @PutMapping(value = "/editCourseLesson")
     public ResponseEntity<Boolean> editCourseLesson(
-        @ModelAttribute LessonInputModel lessonInputModel) {
+        @ModelAttribute @Valid LessonInputModel lessonInputModel) {
         return new ResponseEntity<>(
             courseEntityService.editCourseLesson(lessonInputModel),
             HttpStatus.OK);
@@ -158,7 +159,7 @@ public class CourseController {
 
     @PutMapping(value = "/reject")
     public ResponseEntity<Boolean> rejectCourse(
-        @RequestBody RejectCourseInput rejectCourseInput) {
+        @RequestBody @Valid RejectCourseInput rejectCourseInput) {
         String courseId = rejectCourseInput.getCourseId();
         String rejectionMessage = rejectCourseInput.getRejectionMessage();
         return new ResponseEntity<>(

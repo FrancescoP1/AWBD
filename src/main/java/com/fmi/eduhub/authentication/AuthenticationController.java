@@ -2,6 +2,7 @@ package com.fmi.eduhub.authentication;
 
 import com.fmi.eduhub.dto.UserModel;
 import com.fmi.eduhub.dto.input.UserRegistrationModel;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping(value = "/register")
-  public ResponseEntity<UserModel> registerUser(@RequestBody UserRegistrationModel userRegistrationModel) {
+  public ResponseEntity<UserModel> registerUser(@RequestBody @Valid UserRegistrationModel userRegistrationModel) {
     return authenticationService.registerUser(userRegistrationModel);
   }
 

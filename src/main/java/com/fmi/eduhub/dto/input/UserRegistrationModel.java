@@ -1,7 +1,8 @@
 package com.fmi.eduhub.dto.input;
 
+import com.fmi.eduhub.validation.ValidationMessages;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -10,16 +11,16 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserRegistrationModel {
-    @NotBlank(message = "First name cannot be blank!")
+    @Size(min = 2, max = 100, message = ValidationMessages.FIRST_NAME_SIZE_VALIDATION_MESSAGE)
     private String firstName;
-    @NotBlank(message = "Last name cannot be blank!")
+    @Size(min = 2, max = 100, message = ValidationMessages.LAST_NAME_SIZE_VALIDATION_MESSAGE)
     private String lastName;
 
-    @Email(message = "Please enter a valid email address.")
+    @Email(message = ValidationMessages.EMAIL_VALIDATION_MESSAGE)
     private String emailAddress;
 
-    @NotBlank
+    @Size(min = 6, max = 100, message = ValidationMessages.PASSWORD_SIZE_VALIDATION_MESSAGE)
     private String password;
-    @NotBlank
+    @Size(min = 6, max = 100, message = ValidationMessages.PASSWORD_SIZE_VALIDATION_MESSAGE)
     private String confirmPassword;
 }
